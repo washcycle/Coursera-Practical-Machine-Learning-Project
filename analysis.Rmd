@@ -1,0 +1,58 @@
+---
+title: "Practical Machine Learning Course Project"
+author: "Matthew M. Landowski"
+date: "August 18, 2015"
+output: 
+  html_document: 
+    theme: cosmo
+---
+
+```{r, echo = FALSE, message = FALSE}
+# Libraries needed for computations and visuals
+library(knitr)
+library(ggplot2)
+library(data.table)
+library(dplyr)
+library(grid)
+library(caret)
+library(randomForest)
+load("project_data.R")
+```
+
+# Executive Summary
+Data from sensors located the forearm, wrist, belt and dumbell during a curl exersizes were captured [1]. That data is trained using machine learning algorithms to determine which classe the exersize was executed in. Classe is the output variable this analysis is attempting to predict. The classe variable represents the a quality range of performing a dumbbell curl. Exersize A (correct form) to E (poor form). 52 features (predictors) were used to train the model using the R caret package. The model was training data was trained using repeated cross-validation with generalized boosted regression. Using this method produced a model with 99% accuracy.
+
+# Data
+Training and testing data for this project is hosted on cloudfront.net.
+
+Training data -> https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
+
+Test data -> https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
+
+The source for the training and test datasets can be found at http://groupware.les.inf.puc-rio.br/har.
+
+# Features
+## Feature Selection
+The source data was taken over windows associated to the num_window variable. Rows with statistical averages, variances, standard deviations, etc, variables were removed as they were calulated acorss the entire window. This was a problem because the windowed data was split into the training and test set. The split made it difficult to use values which were derived from the complete dataset. Other variables were removed were V1 (row index), timestamps, user name. Any variables that contained a large portion > 90% NA values were removed. The final dataset was 52 features selected from 120 variables in the training dataset.
+
+## Preprocessing
+Each feature was scaled and centered. Meaning after preprocessing the mean for each variable was zero and the standard deviation was one.
+
+# Model Analysis
+
+Generalized boosted regression model was trained to fit the weightlifting data.
+
+# References
+[1] Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. Qualitative Activity Recognition of Weight Lifting Exercises. Proceedings of 4th International Conference in Cooperation with SIGCHI (Augmented Human '13) . Stuttgart, Germany: ACM SIGCHI, 2013.
+Read more: http://groupware.les.inf.puc-rio.br/har#ixzz3jDk491d5
+
+# Appendix
+
+```{r, echo = F}
+# Test model on training set data
+predictions <- predict(modelFit, newdata=test_)
+confuse <- confusionMatrix(predictions, test_$classe)
+kable(confuse$table)
+```
+
+Table: Confusion Matrix
