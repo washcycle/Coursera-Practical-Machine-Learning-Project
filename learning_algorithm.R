@@ -1,7 +1,7 @@
 library(caret)
 library(randomForest)
 library(doMC)
-registerDoMC(cores = 2)
+registerDoMC(cores = 5) # use 5 cores as this seems to be the optimal number
 
 ## Create data partition
 inTrain = createDataPartition(y = training$classe, p = 0.6)[[1]]
@@ -27,8 +27,10 @@ modelFit <- train(classe ~ ., data = training_,
 predictions <- predict(modelFit, newdata= test_)
 confuse <- confusionMatrix(predictions, test_$classe)
 
-## Test on validation data
+# Calculate out-of-sample error
+mean(modelFit$resample$Accuracy)
 
+## Test on validation data
 validation_raw <- fread("validation.csv", sep = ",", header = T)
 
 ## assign data that summarizes each event window

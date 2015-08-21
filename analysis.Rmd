@@ -38,9 +38,22 @@ The source data was taken over windows associated to the num_window variable. Ro
 ## Preprocessing
 Each feature was scaled and centered. Meaning after preprocessing the mean for each variable was zero and the standard deviation was one.
 
+K-folds was used to do cross-validation. Ten folds were created and repeated 10 times for a total of 100 fold data sets to train and test each model against.
+
 # Model Analysis
 
-Generalized boosted regression model was trained to fit the weightlifting data.
+Generalized boosted regression model was trained to fit the weightlifting data, see code block 1. The train command in the caret package returns the best model fit. The best model three models are return Table 1. Model 27 was selected as the best fit. The predictions were executed against model 27 being the 27th k-fold training and test set, created from the training data set.
+
+Table 2 shows the confusion matrix for model 27. For class A only 5 samples were miss-classified, B 20, C 13, D 17, E 8. Overall this is a good predictior for the data sampled. 
+
+
+## Out-of-Sample Error
+The out of sample error is calculated across the cross-validation k-fold models. The out-of-sample error is estimiated to by the average of the accuracy across all models trained and tested against the training data set only.
+
+Estimated out-of-sample error over 100 trained models: 
+```{r, echo = F}
+mean(modelFit$resample$Accuracy)
+```
 
 # References
 [1] Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. Qualitative Activity Recognition of Weight Lifting Exercises. Proceedings of 4th International Conference in Cooperation with SIGCHI (Augmented Human '13) . Stuttgart, Germany: ACM SIGCHI, 2013.
@@ -49,10 +62,32 @@ Read more: http://groupware.les.inf.puc-rio.br/har#ixzz3jDk491d5
 # Appendix
 
 ```{r, echo = F}
+kable(modelFit$results)
+```
+
+Table: Table 1: Best Three Model Training Results (27 was selected)
+
+```{r, echo = F}
 # Test model on training set data
 predictions <- predict(modelFit, newdata=test_)
 confuse <- confusionMatrix(predictions, test_$classe)
 kable(confuse$table)
 ```
 
-Table: Confusion Matrix
+Table: Table 2: Confusion Matrix
+
+Code Block 1: Cross Validaiton and Training R Code
+```{r, echo = T, eval = F}
+## Define cross validation
+fitControl <- trainControl(## 10-fold CV
+    method = "repeatedcv",
+    number = 10,
+    ## repeated ten times
+    repeats = 10)
+
+## Train model
+modelFit <- train(classe ~ ., data = training_, 
+                  trControl = fitControl, 
+                  preProcess = c("center", "scale"), 
+                  model = "gbm")
+```
