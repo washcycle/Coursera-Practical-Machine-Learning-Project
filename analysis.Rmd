@@ -48,7 +48,7 @@ Table 2 shows the confusion matrix for model 27. For class A only 5 samples were
 
 
 ## Out-of-Sample Error
-The out of sample error is calculated across the cross-validation k-fold models. The out-of-sample error is estimiated to by the average of the accuracy across all models trained and tested against the training data set only.
+The out of sample error is calculated across the cross-validation k-fold models. The out-of-sample error is estimiated by taking the average of the accuracy across all models trained and tested against the training data set only.
 
 Estimated out-of-sample error over 100 trained models: 
 ```{r, echo = F}
