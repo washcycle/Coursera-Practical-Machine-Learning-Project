@@ -88,16 +88,16 @@ img {
 <div id="preprocessing" class="section level2">
 <h2>Preprocessing</h2>
 <p>Each feature was scaled and centered. Meaning after preprocessing the mean for each variable was zero and the standard deviation was one.</p>
-<p>K-folds was used to do cross-validation. Ten folds were created and repeated 10 times for a total of 100 fold data sets to train and test each model against.</p>
+<p>K-folds was used to do cross-validation. Ten folds were created and repeated 10 times for a total of 100 data sets to train and test each model against.</p>
 </div>
 </div>
 <div id="model-analysis" class="section level1">
 <h1>Model Analysis</h1>
-<p>Generalized boosted regression model was trained to fit the weightlifting data, see code block 1. The train command in the caret package returns the best model fit. The best model three models are return Table 2. Model 27 was selected as the best fit. The predictions were executed against model 27 being the 27th k-fold training and test set, created from the training data set.</p>
-<p>Table 1 shows the confusion matrix for model 27.</p>
+<p>Generalized boosted regression model was trained to fit the weightlifting data, see code block 1. The train command in the caret package returns the best model fit. The best model three models are return Table 1. Model 27 was selected as the best fit. The predictions were executed against model 27 being the 27th k-fold training and test set, created from the training data set.</p>
+<p>Table 2 shows the confusion matrix for model 27. For class A only 5 samples were miss-classified, B 20, C 13, D 17, E 8. Overall this is a good predictior for the data sampled.</p>
 <div id="out-of-sample-error" class="section level2">
 <h2>Out-of-Sample Error</h2>
-<p>The out of sample error is calculated across the cross-validation k-fold models. The out-of-sample error is estimiated to by the average of the accuracy across all models trained and tested against the training data set only.</p>
+<p>The out of sample error is calculated across the cross-validation k-fold models. The out-of-sample error is estimiated by taking the average of the accuracy across all models trained and tested against the training data set only.</p>
 <p>Estimated out-of-sample error over 100 trained models:</p>
 <pre><code>## [1] 0.9901157</code></pre>
 </div>
@@ -109,7 +109,42 @@ img {
 <div id="appendix" class="section level1">
 <h1>Appendix</h1>
 <table>
-<caption>Table 1: Confusion Matrix</caption>
+<caption>Table 1: Best Three Model Training Results (27 was selected)</caption>
+<thead>
+<tr class="header">
+<th align="right">mtry</th>
+<th align="right">Accuracy</th>
+<th align="right">Kappa</th>
+<th align="right">AccuracySD</th>
+<th align="right">KappaSD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">0.9899287</td>
+<td align="right">0.9872587</td>
+<td align="right">0.0032138</td>
+<td align="right">0.0040667</td>
+</tr>
+<tr class="even">
+<td align="right">27</td>
+<td align="right">0.9901157</td>
+<td align="right">0.9874949</td>
+<td align="right">0.0030841</td>
+<td align="right">0.0039030</td>
+</tr>
+<tr class="odd">
+<td align="right">52</td>
+<td align="right">0.9851820</td>
+<td align="right">0.9812524</td>
+<td align="right">0.0039087</td>
+<td align="right">0.0049468</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Table 2: Confusion Matrix</caption>
 <thead>
 <tr class="header">
 <th align="left"></th>
@@ -160,41 +195,6 @@ img {
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1434</td>
-</tr>
-</tbody>
-</table>
-<table>
-<caption>Table 2: Best Three Model Training Results (27 was selected)</caption>
-<thead>
-<tr class="header">
-<th align="right">mtry</th>
-<th align="right">Accuracy</th>
-<th align="right">Kappa</th>
-<th align="right">AccuracySD</th>
-<th align="right">KappaSD</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">2</td>
-<td align="right">0.9899287</td>
-<td align="right">0.9872587</td>
-<td align="right">0.0032138</td>
-<td align="right">0.0040667</td>
-</tr>
-<tr class="even">
-<td align="right">27</td>
-<td align="right">0.9901157</td>
-<td align="right">0.9874949</td>
-<td align="right">0.0030841</td>
-<td align="right">0.0039030</td>
-</tr>
-<tr class="odd">
-<td align="right">52</td>
-<td align="right">0.9851820</td>
-<td align="right">0.9812524</td>
-<td align="right">0.0039087</td>
-<td align="right">0.0049468</td>
 </tr>
 </tbody>
 </table>
